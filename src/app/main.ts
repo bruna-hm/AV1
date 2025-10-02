@@ -28,7 +28,7 @@ export function iniciar() {
                 break;
             case "7":
                 leitor.close()
-                console.log('Fechando AeroCode')
+                console.log('\nFechando AeroCode')
                 break;
             default:
                 msg.boasVindas()

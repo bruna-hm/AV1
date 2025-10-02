@@ -40,9 +40,9 @@ export default class Funcionario {
             console.log('\nFuncionário SALVADO')
         }
     }
-    public carregar() {
-        if (this.filePath()) {
-            const fl = fs.readFileSync(this.filePath(), 'utf-8')
+    public static carregar(f, nome) {
+        if (`../files/funcionarios/${f}${nome}.txt`) {
+            const fl = fs.readFileSync(`../files/funcionarios/${f}${nome}.txt`, 'utf-8')
             const atributos = JSON.parse(fl)
             funcionarios.push(new Funcionario(atributos.id, atributos.nome, atributos.telefone, atributos.endereco, atributos.usuario, atributos.sennha, atributos.nivel))
             console.log("\nFuncionário CARREGADO")

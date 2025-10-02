@@ -30,9 +30,9 @@ export default class Teste {
             console.log('\nTeste SALVADA')
         }
     }
-    public carregar(a: Aeronave) {
-        if (this.filePath(a)) {
-            const fl = fs.readFileSync(this.filePath(a), 'utf-8')
+    public static carregar(a, tipo) {
+        if (`../files/testes/${a}${tipo}.txt`) {
+            const fl = fs.readFileSync(`../files/testes/${a}${tipo}.txt`, 'utf-8')
             const atributos = JSON.parse(fl)
             testes.push(new Teste(atributos.tipo, atributos.resultado))
             console.log("\nTeste CARREGADO")
@@ -47,13 +47,13 @@ export default class Teste {
             console.log("\nArquivo do Teste REMOVIDO")
             if (av) {
                 a.historicoDeTestes.splice(av, 1)
-                console.log("\nTeste REMOVIDO")
+                console.log("\nTeste REMOVIDO da Aeronave")
             }
         } else {
             console.log("\nTeste não encontrado")
         }
     }
     private filePath(a: Aeronave) {
-        return `../../files/testes/${a.codigo}${this.tipo}.txt`
+        return `../files/testes/${a.codigo}${this.tipo}.txt`
     }
 }

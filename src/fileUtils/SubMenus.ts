@@ -1,4 +1,4 @@
-import { leitor, aeronaves, pecas, funcionarios, etapas, testes, relatorios, caseA, caseP, caseE, caseF, caseT } from '../fileUtils/utils'
+import { leitor, aeronaves, pecas, funcionarios, etapas, testes, relatorios, caseA, caseP, caseE, caseF, caseT, validarCdg, enTpAeronave, enTpPeca, enStPeca, enStEtapa, enNvPerm, enTpTeste, enRsTeste } from '../fileUtils/utils'
 import Aeronave from '../modelos/Aeronave'
 import { TipoAeronave } from '../modelos/Aeronave'
 import Peca from '../modelos/Peca'
@@ -23,12 +23,12 @@ export function menuA() {
     leitor.question("\nDigite a opção: ", (opcao) => {
         switch (opcao) {
             case "1":
-                leitor.question("\nCódigo: ", (codigo) => {
+                validarCdg((codigo) => {
                     leitor.question("Modelo: ", (modelo) => {
-                        leitor.question("Tipo(COMERCIAL / MILITAR): ", (tipo) => {
+                        enTpAeronave((tipo) => {
                             leitor.question("Capacidade: ", (capacidade) => {
                                 leitor.question("Alcance: ", (alcance) => {
-                                    let novaA = new Aeronave(codigo, modelo, tipo.toUpperCase() as TipoAeronave, Number(capacidade), Number(alcance), [], [], [])
+                                    let novaA = new Aeronave(codigo, modelo, tipo, Number(capacidade), Number(alcance), [], [], [])
                                     aeronaves.push(novaA)
                                     console.log("\nAeronave CADASTRADA")
                                     menuA()
@@ -45,8 +45,8 @@ export function menuA() {
                 })
                 break;
             case "3":
-                caseA("\nDigite o código da Aeronave: ", (a: Aeronave) => {
-                    a.carregar()
+                leitor.question("Digite o código ca Aeronave: ", (codigo) => {
+                    Aeronave.carregar(codigo)
                     menuA()
                 })
                 break;
@@ -81,10 +81,10 @@ export function menuP() {
         switch (opcao) {
             case "1":
                 leitor.question("\nNome: ", (nome) => {
-                    leitor.question("Tipo(NACIONAL / IMPORTADA): ", (tipo) => {
+                    enTpPeca((tipo) => {
                         leitor.question("Fornecedor: ", (fornecedor) => {
-                            leitor.question("Status(EM_PRODUCAO / EM_TRANSPORTE / PRONTA): ", (status) => {
-                                let novaP = new Peca(nome, tipo as TipoPeca, fornecedor, status.toUpperCase() as StatusPeca)
+                            enStPeca((status) => {
+                                let novaP = new Peca(nome, tipo, fornecedor, status.toUpperCase() as StatusPeca)
                                 pecas.push(novaP)
                                 caseA("Digite o código da Aeronave associada: ", (c) => {
                                     c.pecas.push(novaP)
@@ -105,9 +105,9 @@ export function menuP() {
                 })
                 break;
             case "3":
-                caseP("\nDigite o nome da peça: ", (p: Peca) => {
-                    caseA("Digite o código da Aeronave associada: ", (c) => {
-                        p.carregar(c)
+                leitor.question("\nDigite o nome da peça: ", (nome) => {
+                    leitor.question("Digite o código da Aeronave associada: ", (c) => {
+                        Peca.carregar(nome, c)
                         menuP()
                     })
                 })
@@ -152,7 +152,7 @@ export function menuE() {
             case "1":
                 leitor.question("\nNome: ", (nome) => {
                     leitor.question("Prazo: ", (prazo) => {
-                        leitor.question("Status(PENDENTE / ANDAMENTO / CONCLUIDA): ", (status) => {
+                        enStEtapa((status) => {
                             let novaE = new Etapa(nome, prazo, status.toUpperCase() as StatusEtapa, [])
                             etapas.push(novaE)
                             caseA("Digite o código da Aeronava associada: ", (c) => {
@@ -213,7 +213,7 @@ export function menuF() {
                             leitor.question("Endereço: ", (endereco) => {
                                 leitor.question("Usuario: ", (usuario) => {
                                     leitor.question("Senha: ", (senha) => {
-                                        leitor.question("Nivel de permissão(ADMINISTRADOR / ENGENHEIRO / OPERADOR): ", (nivel) => {
+                                        enNvPerm((nivel) => {
                                             let novaF = new Funcionario(id, nome, telefone, endereco, usuario, senha, nivel.toUpperCase() as NivelPermissao)
                                             funcionarios.push(novaF)
                                             console.log("\nFuncionário CADASTRADO")
@@ -233,9 +233,11 @@ export function menuF() {
                 })
                 break;
             case "3":
-                caseF("\nDigite o ID da Funcionário: ", (f) => {
-                    f.carregar()
+                leitor.question("\nDigite o ID da Funcionário: ", (f) => {
+                    leitor.question("\nDigite o nome do Funcionário: ", (nome) => {
+                    Funcionario.carregar(f, nome)
                     menuF()
+                    })
                 })
                 break;
             case "4":
@@ -275,9 +277,9 @@ export function menuT() {
     leitor.question("\nDigite a opção: ", (opcao) => {
         switch (opcao) {
             case "1":
-                leitor.question("\nDigite o tipo(ELETRICO, HIDRAULICO, AERODINAMICO): ", (t) => {
-                    leitor.question("Digite o resultado(APROVADO, REPROVADO): ", (r) => {
-                        let novaT = new Teste(t.toUpperCase() as TipoTeste, r.toUpperCase() as ResultadoTeste)
+                enTpTeste((tipo) => {
+                    enRsTeste((resultado) => {
+                        let novaT = new Teste(tipo, resultado)
                         testes.push(novaT)
                         caseA("Digite a Aeronave relacionada: ", (a) => {
                             a.historicoDeTestes.push(novaT)
@@ -295,9 +297,9 @@ export function menuT() {
                 })
                 break;
             case "3":
-                caseA("\nDigite o código da Aeronave verificada: ", (a) => {
-                    caseT("Digite tipo do Teste: ", (tp) => {
-                        tp.carregar(a)
+                leitor.question("\nDigite o código da Aeronave verificada: ", (a) => {
+                    leitor.question("Digite tipo do Teste: ", (tp) => {
+                        Teste.carregar(a, tp)
                     })
                 })
                 break;
@@ -327,16 +329,20 @@ export function menuR() {
         switch (opcao) {
             case "1":
                 caseA("\nDigite o código da Aeronave: ", (a) => {
-                    console.log('Relatório: ')
-                    console.log(r.gerarRelatorio(a))
-                    menuR()
+                    leitor.question("Digite o nome do Cliente: ", (nome) => {
+                        console.log('\nRelatório:\n')
+                        console.log(r.gerarRelatorio(a, nome))
+                        menuR()
+                    })
                 })
                 break;
             case "2":
                 caseA("\nDigite o código da Aeronave: ", (a) => {
-                    r.salvarEmArquivo(a)
-                    console.log("Relatório SALVADO")
-                    menuR()
+                    leitor.question("Digite o nome do Cliente: ", (nome) => {
+                        r.salvarEmArquivo(a, nome)
+                        console.log("Relatório SALVADO")
+                        menuR()
+                    })
                 })
                 break;
             case "3":

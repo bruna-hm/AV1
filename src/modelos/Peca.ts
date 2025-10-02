@@ -44,9 +44,9 @@ export default class Peca {
             console.log('\nPeça SALVADA')
         }
     }
-    public carregar(a: Aeronave) {
-        if (fs.existsSync(this.filePath(a))) {
-            const fl = fs.readFileSync(this.filePath(a), 'utf-8')
+    public static carregar(nome, codigo) {
+        if (fs.existsSync(`../files/pecas/${nome}${codigo}.txt`)) {
+            const fl = fs.readFileSync(`../files/pecas/${nome}${codigo}.txt`, 'utf-8')
             const atributos = JSON.parse(fl)
             pecas.push(new Peca(atributos.nome, atributos.tipo, atributos.fornecedor, atributos.status))
             console.log("\nPeça CARREGADA")
@@ -61,7 +61,7 @@ export default class Peca {
             console.log("\nArquivo da Peça REMOVIDO")
             if (pc) {
                 a.pecas.splice(pc, 1)
-                console.log("\nPeça REMOVIDA")
+                console.log("\nPeça REMOVIDA da Aeronave")
             }
         } else {
             console.log("\nPeça não encontrada")

@@ -1,6 +1,5 @@
 import * as fs from 'fs';
-import * as pt from 'path';
-import { aeronaves } from '../fileUtils/utils';
+import { aeronaves, validarCdg } from '../fileUtils/utils';
 import Peca from './Peca';
 import Etapa from './Etapa';
 import Teste from './Teste';
@@ -43,16 +42,12 @@ Alcance: ${this.alcance}
     }
     public salvar() {
         const dados = JSON.stringify(this, null, 2)
-        if (fs.existsSync(this.filePath())) {
-            fs.appendFileSync(this.filePath(), dados, 'utf-8')
-        } else {
-            fs.writeFileSync(this.filePath(), dados, 'utf-8')
-            console.log('\nAeronave SALVADA')
-        }
+        fs.writeFileSync(this.filePath(), dados, 'utf-8')
+        console.log('\nAeronave SALVADA')
     }
-    public carregar() {
-        if (fs.existsSync(this.filePath())) {
-            const fl = fs.readFileSync(this.filePath(), 'ascii')
+    public static carregar(codigo) {
+        if (fs.existsSync(`../files/aeronaves/aeronave${codigo}.txt`)) {
+            const fl = fs.readFileSync(`../files/aeronaves/aeronave${codigo}.txt`, 'utf-8')
             const atributos = JSON.parse(fl)
             aeronaves.push(new Aeronave(atributos.codigo, atributos.modelo, atributos.tipo, atributos.capacidade, atributos.alcance, atributos.pecas, atributos.etapas, atributos.historicoDeTestes))
             console.log("\nAeronave CARREGADA")
@@ -74,7 +69,6 @@ Alcance: ${this.alcance}
         }
     }
     private filePath() {
-        
         return `../files/aeronaves/aeronave${this.codigo}.txt`
     }
 }
