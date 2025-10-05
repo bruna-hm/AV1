@@ -51,7 +51,7 @@ export default class Peca {
             pecas.push(new Peca(atributos.nome, atributos.tipo, atributos.fornecedor, atributos.status))
             console.log("\nPeça CARREGADA")
         } else {
-            console.log("\nPeça não econtrada")
+            console.log("\nPeça não encontrada")
         }
     }
     public remover(a: Aeronave) {

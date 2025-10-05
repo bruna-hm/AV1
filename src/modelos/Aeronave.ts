@@ -52,7 +52,7 @@ Alcance: ${this.alcance}
             aeronaves.push(new Aeronave(atributos.codigo, atributos.modelo, atributos.tipo, atributos.capacidade, atributos.alcance, atributos.pecas, atributos.etapas, atributos.historicoDeTestes))
             console.log("\nAeronave CARREGADA")
         } else {
-            console.log("\nAeronave não econtrada")
+            console.log("\nAeronave não encontrada")
         }
     }
     public remover() {
@@ -65,7 +65,7 @@ Alcance: ${this.alcance}
                 console.log("\nAeronave REMOVIDA")
             }
         } else {
-            console.log("\nAeronave não econtrada")
+            console.log("\nAeronave não encontrada")
         }
     }
     private filePath() {

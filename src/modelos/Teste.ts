@@ -37,7 +37,7 @@ export default class Teste {
             testes.push(new Teste(atributos.tipo, atributos.resultado))
             console.log("\nTeste CARREGADO")
         } else {
-            console.log("\nTeste não econtrado")
+            console.log("\nTeste não encontrado")
         }
     }
     public remover(a: Aeronave) {

@@ -47,7 +47,7 @@ export default class Funcionario {
             funcionarios.push(new Funcionario(atributos.id, atributos.nome, atributos.telefone, atributos.endereco, atributos.usuario, atributos.sennha, atributos.nivel))
             console.log("\nFuncionário CARREGADO")
         } else {
-            console.log("\nFuncionário não econtrado")
+            console.log("\nFuncionário não encontrado")
         }
     }
     public remover() {
@@ -59,7 +59,7 @@ export default class Funcionario {
             funcionarios.splice(fc, 1)
             console.log("\Funcionário REMOVIDO")
         } else {
-            console.log("\Funcionário não econtrado")
+            console.log("\Funcionário não encontrado")
         }
     }
     private filePath() {
